@@ -7,67 +7,73 @@
 // Do not forget to update contract address and path to ABI.
 
 const path = require("path");
+require('dotenv').config();
 
 const hre = require("hardhat");
 const ethers = hre.ethers;
 
 async function main() {
-    // Retrieve signers from Hardhat (as defined in the hardhat.config.js file).
-    const [signer1, signer2, signer3] = await ethers.getSigners();
+
+    const notUniMaUrl = process.env.NOT_UNIMA_URL_1;
+    const notUniMaProvider = new ethers.JsonRpcProvider(notUniMaUrl);
+
+    const signer1 = new ethers.Wallet(process.env.METAMASK_1_PRIVATE_KEY, notUniMaProvider);
+    const signer2 = new ethers.Wallet(process.env.METAMASK_2_PRIVATE_KEY, notUniMaProvider);
+    const signer3 = new ethers.Wallet(process.env.METAMASK_3_PRIVATE_KEY, notUniMaProvider);
 
     // Pick the deployer (default is signer1).
-    const signer = signer3;
+    const signer = signer1;
     console.log("Deployer of contract is:", signer.address);
-
 
     // Contract.
     ////////////
-
+  
     // Contract address.
-    const contractAddr = "YOUR_CONTRACT_ADDRESS";
+    const contractAddr = "0x3c3c981bDBf0Ee03e21024A24324d50Fcff0B68A";
 
     // Locate ABI as created by Hardhat after compilation/deployment.
     // (adjust names and path accordingly).
+
     const pathToABI = path.join(
         __dirname,
-        "..",
+        "..", "..",
         "artifacts",
         "contracts",
-        "Token.sol",
+        "assignment_3",
+        "Token_template.sol",
         "CensorableToken.json"
     );
-    // console.log(pathToABI);
+    // console.log("Path to ABI is:", pathToABI);
 
     const ABI = require(pathToABI).abi;
-    // console.log(ABI);
 
     // Create contract with attached signer.
     const contract = new ethers.Contract(contractAddr, ABI, signer);
+    console.log("Contract address is:", contract.target);
 
     // Addresses.
     /////////////
 
     // Owner.
     const owner = signer.address;
-    // console.log(owner);
+    console.log("Owner address is:", owner);
     
     // If owner is defined in your contract check that it is the same as above.
-    // console.log("Owner is ", await contract.owner());
+    console.log("Owner is ", await contract.getFunction("owner")());
 
     // Address used for blacklisting.
     const testSigner = signer2;
     const testAddr = testSigner.address;
-    // console.log('TEST ADDRESS: ', testAddr);
+    console.log('Test address is:', testAddr);
 
     // Validator address
     // (or any other address, not actually used for validation here).
-    const validatorAddr = "0x0fc1027d91558dF467eCfeA811A8bCD74a927B1e";
+    const validatorAddr = "0xc4b72e5999E2634f4b835599cE0CBA6bE5Ad3155";
 
     // TASK A.
     //////////
 
     const taskA1 = async function () {
-        console.log("TASK A1");
         ///////////////////////
 
         // Check balances.
@@ -93,10 +99,10 @@ async function main() {
         }
     };
 
-    // await taskA1();
+    console.log("TASK A1");
+    await taskA1();
 
     const taskA2 = async function () {
-      console.log("TASK A2");
       ///////////////////////
 
       let allowance = await contract.allowance(owner, validatorAddr);
@@ -109,10 +115,10 @@ async function main() {
       } else {
           console.error("  OK! Allowance of validator is totalSupply - 10.");
       }
-
     };
 
-    // await taskA2();
+    console.log("TASK A2");
+    await taskA2();
 
     // TASK B and C.
     ////////////////
@@ -147,7 +153,8 @@ async function main() {
         if (cb) await cb(addr, bl);
     };
 
-    // await taskBandC(testAddr);
+    console.log("TASK B and C");
+    await taskBandC(testAddr);
 
     // TASK D.
     //////////
@@ -178,7 +185,8 @@ async function main() {
 
     };
 
-    // await taskBandC(testAddr, taskDcb);
+    console.log("TASK D to");
+    await taskBandC(testAddr, taskDcb);
 
     async function taskDcbFrom(addr) {
       
@@ -212,7 +220,8 @@ async function main() {
       }
     };
 
-    // await taskDcbFrom(testAddr);
+    console.log("TASK D from");
+    await taskDcbFrom(testAddr);
 
     // TASK E.
     //////////
@@ -230,7 +239,7 @@ async function main() {
       let eventCounterBl  = 0;
       let eventCounterUbl = 0;
       const eventBlacklisted = 'Blacklisted';
-      const eventUnblacklisted = 'Unblacklisted';
+      const eventUnblacklisted = 'UnBlacklisted';
       events.forEach(logToParse => {
         const parsedLog = contractInterface.parseLog(logToParse);
         // console.log(parsedLog)
@@ -254,6 +263,7 @@ async function main() {
 
     };
 
+    console.log("TASK E");
     await taskE();
 
 }
