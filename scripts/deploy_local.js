@@ -23,7 +23,6 @@ async function main() {
     const val = await Val.deploy();
     const valAddress = val.target;
     console.log('Local Validator address: ' + valAddress);
-
     
     // Now we can deploy the assignment.
 
