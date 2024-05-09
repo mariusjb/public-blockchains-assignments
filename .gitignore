@@ -19,11 +19,13 @@ contracts/assignment_2/Assignment2.sol
 scripts/assignment_2/interact2.js
 scripts/assignment_2/interact.js
 
-assignment_3/Token.sol
+# assignment_3/Token.sol
 # assignment_4
 # validators/assignment_4
 .addresses.json
 # Assignment4Exchange.sol
+
+val3_abi.json
 
 scripts/assignment_4/interact*
 # deploy_unima.js
@@ -50,40 +52,11 @@ now_abi.json
 send_now_coins*
 send_now_tokens*
 deploy_my_quiz.js
-Token.sol
 
-node_modules
-.env
+myquiz2*
 
-# Hardhat files
-/cache
-/artifacts
+get_*
 
-# TypeChain files
-/typechain
-/typechain-types
+val2*
 
-# solidity-coverage files
-/coverage
-/coverage.json
-
-# Hardhat Ignition default folder for deployments against a local node
-ignition/deployments/chain-31337
-
-node_modules
-.env
-
-# Hardhat files
-/cache
-/artifacts
-
-# TypeChain files
-/typechain
-/typechain-types
-
-# solidity-coverage files
-/coverage
-/coverage.json
-
-# Hardhat Ignition default folder for deployments against a local node
-ignition/deployments/chain-31337
+ERC20*
